@@ -31,21 +31,19 @@ int	main(int argc, char **argv)
 	// 引数チェック
 	if (argc != 5 && argc != 6)
 	{
-		printf("Usage: %s number_of_philosophers time_to_die time_to_eat ",
-			argv[0]);
-		printf("time_to_sleep [number_of_times_each_philosopher_must_eat]\n");
+		printf(FORMAT_USAGE, argv[0]);
 		return (EXIT_FAILURE);
 	}
 	// 初期化
 	if (init_data(&data, argc, argv) == ERROR)
 	{
-		printf("Error: Failed to initialize data\n");
+		printf(FORMAT_INIT_ERROR);
 		return (EXIT_FAILURE);
 	}
 	// スレッド作成
 	if (create_threads(&data) == ERROR)
 	{
-		printf("Error: Thread creation failed\n");
+		printf(FORMAT_INIT_ERROR);
 		cleanup_resources(&data);
 		return (EXIT_FAILURE);
 	}

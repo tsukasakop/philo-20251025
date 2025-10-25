@@ -11,24 +11,20 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
-#include <string.h>
-#include <sys/time.h>
-#include <unistd.h>
 
-char	*timeval_to_string(struct timeval *src)
-{
-	static char	buffer[32];
-	time_t		rawtime;
-	struct tm	*timeinfo;
+// char	*timeval_to_string(struct timeval *src)
+// {
+// 	static char	buffer[32];
+// 	time_t		rawtime;
+// 	struct tm	*timeinfo;
 
-	rawtime = src->tv_sec;
-	timeinfo = localtime(&rawtime);
-	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
-	snprintf(buffer + strlen(buffer), sizeof(buffer) - strlen(buffer), ".%06d",
-		src->tv_usec);
-	return (strdup(buffer));
-}
+// 	rawtime = src->tv_sec;
+// 	timeinfo = localtime(&rawtime);
+// 	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
+// 	snprintf(buffer + strlen(buffer), sizeof(buffer) - strlen(buffer), ".%06d",
+// 		src->tv_usec);
+// 	return (strdup(buffer));
+// }
 
 struct timeval	*timeval_from_ms(struct timeval *dest, long ms)
 {
@@ -95,7 +91,9 @@ void	sleep_until(struct timeval *wait_for)
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	while (now.tv_sec < wait_for->tv_sec || (now.tv_sec == wait_for->tv_sec
-			&& now.tv_usec < wait_for->tv_usec))
+	while (cmp_timeval(&now, wait_for) & CMP_LESS_THAN)
+	{
+		usleep(0);
 		gettimeofday(&now, NULL);
+	}
 }

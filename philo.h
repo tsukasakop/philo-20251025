@@ -20,6 +20,9 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+// 定数定義
+# define MAX_PHILOSOPHERS 3000
+
 // 戻り値定義
 # define SUCCESS 0
 # define ERROR 1
@@ -34,6 +37,9 @@
 # define MSG_THINK "is thinking"
 # define MSG_DIED "died"
 
+# define FORMAT_USAGE "Usage: %s number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
+# define FORMAT_INIT_ERROR "Error: Failed to initialize data\n"
+
 // タイミング調整
 # define US_MONITOR_INTERVAL 100 // 監視間隔(μs)
 # define US_ATE_DELAY 300        // 食後の待機時間(μs)
@@ -42,9 +48,6 @@
 # define CMP_EQUAL 1
 # define CMP_LESS_THAN 2
 # define CMP_GREATER_THAN 4
-# define CMP_NOT_EQUAL 6
-# define CMP_LESS_EQUAL_THAN 3
-# define CMP_GREATER_EQUAL_THAN 5
 
 typedef struct s_data	t_data;
 
@@ -81,40 +84,46 @@ typedef struct s_data
 	pthread_t					monitor_thread;    // 監視スレッド
 }						t_data;
 
+typedef enum e_action
+{
+	TAKE_FORK,
+	EAT,
+	SLEEP,
+	THINK,
+	DIED
+}	t_action;
+
 /* Main functions */
 int						main(int argc, char **argv);
-int						init_data(t_data *data, int argc, char **argv);
-void					cleanup_resources(t_data *data);
 int						create_threads(t_data *data);
 int						wait_for_threads(t_data *data);
 
 /* Init functions */
-int						init_args(t_data *data, int argc, char **argv);
-int						init_philosophers(t_data *data);
-int						init_mutexes(t_data *data);
+int						init_data(t_data *data, int argc, char **argv);
 
 /* Philosopher functions */
 void					*philosopher_routine(void *arg);
-void					eat(t_philosopher *philo);
-void					think(t_philosopher *philo);
-void					sleep_with_release_forks(t_philosopher *philo);
-int						try_take_forks(t_philosopher *philo);
-void					release_forks(t_philosopher *philo);
 
 /* Monitor functions */
 void					*monitor_routine(void *arg);
-int						has_dead(t_data *data);
-int						has_completed(t_data *data);
 
-/* Utility functions */
-void					log_action(t_philosopher *philo, const char *action);
-long					get_time(void);
+/* Standard utility functions */
+size_t					ft_strlen(const char *s);
+int						ft_atoi(const char *str);
+void					*ft_memcpy(void *dest, const void *src, size_t n);
+void					*ft_memset(void *b, int c, size_t len);
+
+/* Timeval utility functions */
+// char					*timeval_to_string(struct timeval *src);
 struct timeval			*timeval_from_ms(struct timeval *dest, long ms);
 struct timeval			*add_timeval(struct timeval *dest, struct timeval *add);
 struct timeval			*sub_timeval(struct timeval *dest, struct timeval *sub);
 int						cmp_timeval(struct timeval *t1, struct timeval *t2);
 void					sleep_until(struct timeval *wait_for);
-int						ft_atoi(const char *str);
-char					*timeval_to_string(struct timeval *src);
+
+/* Utility functions */
+void					cleanup_resources(t_data *data);
+int						is_valid_number(const char *str);
+void					log_action(t_philosopher *philo, t_action action);
 
 #endif

@@ -10,6 +10,37 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philo.h"
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	len;
+
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t				i;
+	unsigned char		*d;
+	const unsigned char	*s;
+
+	if (dest == NULL && src == NULL)
+		return (NULL);
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dest);
+}
+
 /**
  * ft_atoi - Converts a string to an integer
  * @str: String to convert
@@ -43,32 +74,4 @@ int	ft_atoi(const char *str)
 		i++;
 	}
 	return (result * sign);
-}
-
-/**
- * is_valid_number - Validates if a string represents a valid number
- * @str: String to validate
- *
- * This function checks if a string contains only valid numeric characters.
- * It allows an optional sign at the beginning but requires at least one
- * digit after the sign. Used for input validation.
- *
- * Return: 1 if the string is a valid number, 0 otherwise
- */
-int	is_valid_number(const char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (str[i] == '\0')
-		return (0);
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (0);
-		i++;
-	}
-	return (1);
 }
