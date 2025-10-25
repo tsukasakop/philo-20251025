@@ -20,31 +20,26 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-// 定数定義
 # define MAX_PHILOSOPHERS 3000
 
-// 戻り値定義
 # define SUCCESS 0
 # define ERROR 1
 # define MALLOC_ERROR -1
 # define MUTEX_ERROR -2
 # define THREAD_ERROR -3
 
-// 状態メッセージ
 # define MSG_FORK "has taken a fork"
 # define MSG_EAT "is eating"
 # define MSG_SLEEP "is sleeping"
 # define MSG_THINK "is thinking"
 # define MSG_DIED "died"
 
-# define FORMAT_USAGE "Usage: %s number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]\n"
+# define FORMAT_USAGE "Usage: %s n_of_philo die_ms eat_ms sleep_ms [must_eat]\n"
 # define FORMAT_INIT_ERROR "Error: Failed to initialize data\n"
 
-// タイミング調整
-# define US_MONITOR_INTERVAL 100 // 監視間隔(μs)
-# define US_ATE_DELAY 300        // 食後の待機時間(μs)
+# define US_MONITOR_INTERVAL 100
+# define US_ATE_DELAY 300
 
-// 比較結果定義
 # define CMP_EQUAL 1
 # define CMP_LESS_THAN 2
 # define CMP_GREATER_THAN 4
@@ -53,35 +48,31 @@ typedef struct s_data	t_data;
 
 typedef struct s_philosopher
 {
-	int							id;                      // 哲学者ID (1-based)
-	int							eat_count;               // 現在の食事回数
-	struct timeval				last_ate_at;            // 最後の食事開始時刻（timeval形式）
-	int							is_eating;               // 食事中フラグ
-	pthread_mutex_t				*left_fork;              // 左フォークへのポインタ
-	pthread_mutex_t				*right_fork;             // 右フォークへのポインタ
-	pthread_t					thread;                   // スレッドハンドル
-	struct s_data				*data;                    // 共有データへの参照
+	int							id;
+	int							eat_count;
+	struct timeval				last_ate_at;
+	int							is_eating;
+	pthread_mutex_t				*left_fork;
+	pthread_mutex_t				*right_fork;
+	pthread_t					thread;
+	struct s_data				*data;
 }						t_philosopher;
 
 typedef struct s_data
 {
-	// プログラム引数
-	int							num_philosophers;         // 哲学者数
-	struct timeval				time_to_die;              // 死亡時間(ms)
-	struct timeval				time_to_eat;              // 食事時間(ms)
-	struct timeval				time_to_sleep;            // 睡眠時間(ms)
-	int							must_eat_count;           // 必要食事回数(-1=無制限)
-	// 実行時情報
-	struct timeval				started_at;               // シミュレーション開始時刻（timeval形式）
-	int							simulation_end;           // 終了フラグ
-	// スレッド同期
-	pthread_mutex_t				print_mutex;              // 出力用ミューテックス
-	pthread_mutex_t				data_mutex;               // データアクセス用ミューテックス
-	pthread_mutex_t				meal_mutex;               // 食事情報アクセス用
-	// リソース
-	pthread_mutex_t				*forks;      // フォーク配列
-	t_philosopher				*philosophers; // 哲学者配列
-	pthread_t					monitor_thread;    // 監視スレッド
+	int							num_philosophers;
+	struct timeval				time_to_die;
+	struct timeval				time_to_eat;
+	struct timeval				time_to_sleep;
+	int							must_eat_count;
+	struct timeval				started_at;
+	int							simulation_end;
+	pthread_mutex_t				print_mutex;
+	pthread_mutex_t				data_mutex;
+	pthread_mutex_t				meal_mutex;
+	pthread_mutex_t				*forks;
+	t_philosopher				*philosophers;
+	pthread_t					monitor_thread;
 }						t_data;
 
 typedef enum e_action
@@ -93,35 +84,21 @@ typedef enum e_action
 	DIED
 }	t_action;
 
-/* Main functions */
 int						main(int argc, char **argv);
 int						create_threads(t_data *data);
 int						wait_for_threads(t_data *data);
-
-/* Init functions */
 int						init_data(t_data *data, int argc, char **argv);
-
-/* Philosopher functions */
 void					*philosopher_routine(void *arg);
-
-/* Monitor functions */
 void					*monitor_routine(void *arg);
-
-/* Standard utility functions */
 size_t					ft_strlen(const char *s);
 int						ft_atoi(const char *str);
 void					*ft_memcpy(void *dest, const void *src, size_t n);
 void					*ft_memset(void *b, int c, size_t len);
-
-/* Timeval utility functions */
-// char					*timeval_to_string(struct timeval *src);
 struct timeval			*timeval_from_ms(struct timeval *dest, long ms);
 struct timeval			*add_timeval(struct timeval *dest, struct timeval *add);
 struct timeval			*sub_timeval(struct timeval *dest, struct timeval *sub);
 int						cmp_timeval(struct timeval *t1, struct timeval *t2);
 void					sleep_until(struct timeval *wait_for);
-
-/* Utility functions */
 void					cleanup_resources(t_data *data);
 int						is_valid_number(const char *str);
 void					log_action(t_philosopher *philo, t_action action);

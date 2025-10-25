@@ -14,7 +14,6 @@
 
 static int	init_args(t_data *data, int argc, char **argv)
 {
-	// 引数検証
 	if (!is_valid_number(argv[1]) || !is_valid_number(argv[2])
 		|| !is_valid_number(argv[3]) || !is_valid_number(argv[4]))
 		return (ERROR);
@@ -25,7 +24,6 @@ static int	init_args(t_data *data, int argc, char **argv)
 		return (ERROR);
 	if (ft_atoi(argv[1]) > MAX_PHILOSOPHERS)
 		return (ERROR);
-	// 引数の数値変換・検証
 	data->num_philosophers = ft_atoi(argv[1]);
 	timeval_from_ms(&data->time_to_die, ft_atoi(argv[2]));
 	timeval_from_ms(&data->time_to_eat, ft_atoi(argv[3]));
@@ -37,15 +35,6 @@ static int	init_args(t_data *data, int argc, char **argv)
 	return (SUCCESS);
 }
 
-/**
- * init_mutexes - 全ミューテックスの初期化
- * @data: t_data構造体へのポインタ
- *
- * フォークミューテックス配列初期化、出力用ミューテックス初期化、
- * データアクセス用ミューテックス初期化、食事情報用ミューテックス初期化を行う。
- *
- * Return: SUCCESS(成功), MUTEX_ERROR(失敗)
- */
 static int	init_fork_mutexes(t_data *data)
 {
 	int	i;
@@ -64,15 +53,6 @@ static int	init_fork_mutexes(t_data *data)
 	return (SUCCESS);
 }
 
-/**
- * init_mutexes - 全ミューテックスの初期化
- * @data: t_data構造体へのポインタ
- *
- * フォークミューテックス配列初期化、出力用ミューテックス初期化、
- * データアクセス用ミューテックス初期化、食事情報用ミューテックス初期化を行う。
- *
- * Return: SUCCESS(成功), MUTEX_ERROR(失敗)
- */
 static int	init_mutexes(t_data *data)
 {
 	int	success_flag;
@@ -94,14 +74,6 @@ static int	init_mutexes(t_data *data)
 	return (SUCCESS);
 }
 
-/**
- * init_philosophers - 各哲学者の初期化
- * @data: t_data構造体へのポインタ
- *
- * 各哲学者のID設定（1-based）、フォークポインタ設定、初期値設定を行う。
- *
- * Return: SUCCESS(成功)
- */
 static int	init_philosophers(t_data *data)
 {
 	int	i;
@@ -122,18 +94,6 @@ static int	init_philosophers(t_data *data)
 	return (SUCCESS);
 }
 
-/**
- * init_data - データ構造の初期化
- * @data: 初期化するt_data構造体へのポインタ
- * @argc: コマンドライン引数の数
- * @argv: コマンドライン引数の配列
- *
- * 引数の数値変換・検証、ミューテックス初期化、メモリ割り当て、
- * 哲学者構造体の初期化を行う。
- *
- * Return: SUCCESS(正常終了), ERROR(引数エラー),
- *         MALLOC_ERROR(メモリ割り当て失敗), MUTEX_ERROR(ミューテックス初期化失敗)
- */
 int	init_data(t_data *data, int argc, char **argv)
 {
 	memset(data, 0, sizeof(t_data));

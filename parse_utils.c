@@ -41,16 +41,6 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-/**
- * ft_atoi - Converts a string to an integer
- * @str: String to convert
- *
- * This function converts a string representation of a number to an integer.
- * It handles leading whitespace, optional sign character, and numeric digits.
- * This is a simplified version of the standard atoi function.
- *
- * Return: The converted integer value
- */
 int	ft_atoi(const char *str)
 {
 	int	result;

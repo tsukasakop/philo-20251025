@@ -12,27 +12,6 @@
 
 #include "philo.h"
 
-/**
- * take_forks - Attempts to acquire both forks for a philosopher
- * @philo: Pointer to the philosopher structure
- *
- * This function handles fork acquisition with deadlock prevention.
- * For single philosopher case, it simulates the impossibility of eating.
- * For multiple philosophers, it uses different fork order based on
- * philosopher ID to prevent circular wait and deadlock. Odd philosophers
- * take left then right, even philosophers take right then left.
- *
- * Return: 0 on success (both forks acquired), 1 on failure or simulation end
- */
-/**
- * try_take_forks - デッドロック回避してフォーク取得
- * @philo: 哲学者構造体へのポインタ
- *
- * デッドロック回避アルゴリズムを適用してフォークを取得する。
- * 奇数IDの哲学者: 左→右、偶数IDの哲学者: 右→左の順序で取得。
- *
- * Return: SUCCESS(成功), ERROR(失敗)
- */
 static int	try_take_forks(t_philosopher *philo)
 {
 	if (philo->data->simulation_end)
@@ -54,29 +33,12 @@ static int	try_take_forks(t_philosopher *philo)
 	return (SUCCESS);
 }
 
-/**
- * think - 思考フェーズ
- * @philo: 哲学者構造体へのポインタ
- *
- * 状態ログ出力、短時間のusleep（CPUを他に譲る）。
- *
- * Return: void
- */
 static void	think(t_philosopher *philo)
 {
 	log_action(philo, THINK);
 	usleep(0);
 }
 
-/**
- * eat - 食事処理
- * @philo: 哲学者構造体へのポインタ
- *
- * 食事開始時刻記録、食事中フラグセット、状態ログ出力、
- * 指定時間待機、食事回数インクリメント、食事中フラグクリア。
- *
- * Return: void
- */
 static void	eat(t_philosopher *philo)
 {
 	struct timeval	tmp;
@@ -91,14 +53,6 @@ static void	eat(t_philosopher *philo)
 	sleep_until(&tmp);
 }
 
-/**
- * sleep_with_release_forks - 食事後の睡眠フェーズ
- * @philo: 哲学者構造体へのポインタ
- *
- * 指定時間の睡眠、状態ログ出力。
- *
- * Return: void
- */
 static void	sleep_with_release_forks(t_philosopher *philo)
 {
 	struct timeval	tmp;
@@ -120,17 +74,6 @@ static void	sleep_with_release_forks(t_philosopher *philo)
 	sleep_until(&tmp);
 }
 
-/**
- * philosopher_routine - Main routine executed by each philosopher thread
- * @arg: Pointer to the philosopher structure (cast to void*)
- *
- * This function implements the main loop for each philosopher thread.
- * Even-numbered philosophers start with a delay to reduce contention.
- * Each philosopher continuously tries to take forks, eat, drop forks,
- * sleep, and think until the simulation ends or they've eaten enough.
- *
- * Return: NULL (required for pthread compatibility)
- */
 void	*philosopher_routine(void *arg)
 {
 	t_philosopher	*philo;

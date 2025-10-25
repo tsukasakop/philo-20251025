@@ -12,20 +12,6 @@
 
 #include "philo.h"
 
-// char	*timeval_to_string(struct timeval *src)
-// {
-// 	static char	buffer[32];
-// 	time_t		rawtime;
-// 	struct tm	*timeinfo;
-
-// 	rawtime = src->tv_sec;
-// 	timeinfo = localtime(&rawtime);
-// 	strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeinfo);
-// 	snprintf(buffer + strlen(buffer), sizeof(buffer) - strlen(buffer), ".%06d",
-// 		src->tv_usec);
-// 	return (strdup(buffer));
-// }
-
 struct timeval	*timeval_from_ms(struct timeval *dest, long ms)
 {
 	memset(dest, 0, sizeof(struct timeval));
@@ -77,15 +63,6 @@ int	cmp_timeval(struct timeval *t1, struct timeval *t2)
 	return (CMP_EQUAL);
 }
 
-/**
- * ms_sleep_wait_until - ミリ秒単位の正確な待機
- * @duration_ms: 待機時刻（ミリ秒）
- *
- * 標準のusleepより正確な待機を提供する。経過時間を積極的にチェックし、
- * ビジーウェイトを避けながらタイミングクリティカルな操作の精度を維持する。
- *
- * Return: void
- */
 void	sleep_until(struct timeval *wait_for)
 {
 	struct timeval	now;
