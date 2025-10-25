@@ -24,12 +24,4 @@ fclean: clean
 
 re: fclean all
 
-bonus:
-	$(MAKE) -C ../philo_bonus
-
-test: $(NAME)
-	@echo "\n=== Philosophers Test Suite (Vitest) ==="
-	@echo "Testing mandatory part..."
-	@cd ../test && npm run test:mandatory
-
-.PHONY: all clean fclean re bonus test
+.PHONY: all clean fclean re
