@@ -33,12 +33,6 @@ static int	try_take_forks(t_philosopher *philo)
 	return (SUCCESS);
 }
 
-static void	think(t_philosopher *philo)
-{
-	log_action(philo, THINK);
-	usleep(0);
-}
-
 static void	eat(t_philosopher *philo)
 {
 	struct timeval	tmp;
@@ -74,6 +68,19 @@ static void	sleep_with_release_forks(t_philosopher *philo)
 	sleep_until(&tmp);
 }
 
+void	*solo_routine(void *arg)
+{
+	t_philosopher	*philo;
+
+	philo = (t_philosopher *)arg;
+	pthread_mutex_lock(philo->left_fork);
+	log_action(philo, TAKE_FORK);
+	while (!philo->data->simulation_end)
+		usleep(100);
+	pthread_mutex_unlock(philo->left_fork);
+	return (NULL);
+}
+
 void	*philosopher_routine(void *arg)
 {
 	t_philosopher	*philo;
@@ -81,7 +88,7 @@ void	*philosopher_routine(void *arg)
 	philo = (t_philosopher *)arg;
 	while (!philo->data->simulation_end)
 	{
-		think(philo);
+		log_action(philo, THINK);
 		if (try_take_forks(philo) == 0)
 		{
 			eat(philo);

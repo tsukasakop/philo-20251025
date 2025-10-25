@@ -42,6 +42,16 @@ int	create_threads(t_data *data)
 	int	i;
 
 	i = 0;
+	if (data->num_philosophers == 1)
+	{
+		if (pthread_create(&data->philosophers[0].thread, NULL,
+				solo_routine, &data->philosophers[0]) != 0)
+			return (ERROR);
+		if (pthread_create(&data->monitor_thread, NULL,
+				monitor_routine, data) != 0)
+			return (ERROR);
+		return (SUCCESS);
+	}
 	while (i < data->num_philosophers)
 	{
 		if (pthread_create(&data->philosophers[i].thread, NULL,
@@ -61,7 +71,7 @@ int	wait_for_threads(t_data *data)
 	i = 0;
 	while (i < data->num_philosophers)
 	{
-		if (pthread_detach(data->philosophers[i].thread) != 0)
+		if (pthread_join(data->philosophers[i].thread, NULL) != 0)
 			return (ERROR);
 		i++;
 	}

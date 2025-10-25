@@ -88,6 +88,7 @@ int						main(int argc, char **argv);
 int						create_threads(t_data *data);
 int						wait_for_threads(t_data *data);
 int						init_data(t_data *data, int argc, char **argv);
+void					*solo_routine(void *arg);
 void					*philosopher_routine(void *arg);
 void					*monitor_routine(void *arg);
 size_t					ft_strlen(const char *s);
