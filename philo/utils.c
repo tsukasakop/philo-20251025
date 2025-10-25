@@ -21,7 +21,7 @@ void	cleanup_resources(t_data *data)
 		i = 0;
 		while (i < data->num_philosophers)
 		{
-			pthread_mutex_destroy(&data->forks[i]);
+			pthread_mutex_destroy(&data->forks[i].mutex);
 			i++;
 		}
 		free(data->forks);

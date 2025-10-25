@@ -46,14 +46,20 @@
 
 typedef struct s_data	t_data;
 
+typedef struct s_fork
+{
+	pthread_mutex_t				mutex;
+	struct timeval				released_at;
+}						t_fork;
+
 typedef struct s_philosopher
 {
 	int							id;
 	int							eat_count;
 	struct timeval				last_ate_at;
 	int							is_eating;
-	pthread_mutex_t				*left_fork;
-	pthread_mutex_t				*right_fork;
+	t_fork						*left_fork;
+	t_fork						*right_fork;
 	pthread_t					thread;
 	struct s_data				*data;
 }						t_philosopher;
@@ -70,7 +76,7 @@ typedef struct s_data
 	pthread_mutex_t				print_mutex;
 	pthread_mutex_t				data_mutex;
 	pthread_mutex_t				meal_mutex;
-	pthread_mutex_t				*forks;
+	t_fork						*forks;
 	t_philosopher				*philosophers;
 	pthread_t					monitor_thread;
 }						t_data;
