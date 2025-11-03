@@ -15,16 +15,17 @@
 static int	has_dead(t_data *data)
 {
 	int				i;
-	struct timeval	sub;
+	struct timeval	now;
+	struct timeval	dead_at;
 
 	i = 0;
 	while (i < data->num_philosophers)
 	{
 		pthread_mutex_lock(&data->meal_mutex);
-		gettimeofday(&sub, NULL);
-		sub_timeval(&sub, &(data->philosophers[i].last_ate_at));
-		if (cmp_timeval(&sub,
-				&data->time_to_die) & (CMP_EQUAL | CMP_GREATER_THAN))
+		gettimeofday(&now, NULL);
+		dead_at = data->philosophers[i].last_ate_at;
+		add_timeval(&dead_at, &(data->time_to_die));
+		if (cmp_timeval(&now, &dead_at) & (CMP_EQUAL | CMP_GREATER_THAN))
 		{
 			pthread_mutex_lock(&data->data_mutex);
 			data->simulation_end = 1;
