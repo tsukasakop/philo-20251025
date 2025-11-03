@@ -14,8 +14,6 @@
 
 static int	try_take_forks(t_philosopher *philo)
 {
-	if (philo->data->simulation_end)
-		return (ERROR);
 	if (philo->id % 2 == 1)
 	{
 		pthread_mutex_lock(philo->left_fork);
@@ -75,8 +73,17 @@ void	*solo_routine(void *arg)
 	philo = (t_philosopher *)arg;
 	pthread_mutex_lock(philo->left_fork);
 	log_action(philo, TAKE_FORK);
-	while (!philo->data->simulation_end)
+	while (1)
+	{
+		pthread_mutex_lock(&philo->data->data_mutex);
+		if (philo->data->simulation_end)
+		{
+			pthread_mutex_unlock(&philo->data->data_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->data_mutex);
 		usleep(100);
+	}
 	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
 }
@@ -86,8 +93,15 @@ void	*philosopher_routine(void *arg)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)arg;
-	while (!philo->data->simulation_end)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->data->data_mutex);
+		if (philo->data->simulation_end)
+		{
+			pthread_mutex_unlock(&philo->data->data_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->data_mutex);
 		log_action(philo, THINK);
 		if (try_take_forks(philo) == 0)
 		{
