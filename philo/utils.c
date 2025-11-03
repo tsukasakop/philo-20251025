@@ -28,7 +28,6 @@ void	cleanup_resources(t_data *data)
 	}
 	if (data->philosophers)
 		free(data->philosophers);
-	pthread_mutex_destroy(&data->print_mutex);
 	pthread_mutex_destroy(&data->data_mutex);
 	pthread_mutex_destroy(&data->meal_mutex);
 }
@@ -62,18 +61,16 @@ void	log_action(t_philosopher *philo, t_action action)
 	};
 	struct timeval		sub;
 
-	pthread_mutex_lock(&philo->data->print_mutex);
 	pthread_mutex_lock(&philo->data->data_mutex);
 	if (!philo->data->simulation_end || action == DIED)
 	{
 		gettimeofday(&sub, NULL);
 		sub_timeval(&sub, &(philo->data->started_at));
 		if (sub.tv_sec == 0)
-			printf("%d %d %s\n", sub.tv_usec / 1000, philo->id, msg[action]);
+			printf("%d ", sub.tv_usec / 1000);
 		else
-			printf("%ld%03d %d %s\n", sub.tv_sec, sub.tv_usec / 1000, philo->id,
-				msg[action]);
+			printf("%ld%03d ", sub.tv_sec, sub.tv_usec / 1000);
+		printf("%d %s\n", philo->id, msg[action]);
 	}
 	pthread_mutex_unlock(&philo->data->data_mutex);
-	pthread_mutex_unlock(&philo->data->print_mutex);
 }

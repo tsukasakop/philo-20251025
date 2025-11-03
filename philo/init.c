@@ -60,15 +60,12 @@ static int	init_mutexes(t_data *data)
 	success_flag = 0;
 	success_flag |= (pthread_mutex_init(&data->meal_mutex, NULL) != 0) << 0;
 	success_flag |= (pthread_mutex_init(&data->data_mutex, NULL) != 0) << 1;
-	success_flag |= (pthread_mutex_init(&data->print_mutex, NULL) != 0) << 2;
 	if (success_flag || init_fork_mutexes(data) != SUCCESS)
 	{
 		if (success_flag & (1 << 0))
 			pthread_mutex_destroy(&data->meal_mutex);
 		if (success_flag & (1 << 1))
 			pthread_mutex_destroy(&data->data_mutex);
-		if (success_flag & (1 << 2))
-			pthread_mutex_destroy(&data->print_mutex);
 		return (ERROR);
 	}
 	return (SUCCESS);
