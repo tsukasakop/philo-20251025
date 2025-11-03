@@ -41,9 +41,9 @@ static void	eat(t_philosopher *philo)
 	gettimeofday(&philo->last_ate_at, NULL);
 	philo->eat_count++;
 	log_action(philo, EAT);
-	pthread_mutex_unlock(&philo->data->meal_mutex);
 	tmp = philo->last_ate_at;
 	add_timeval(&tmp, &(philo->data->time_to_eat));
+	pthread_mutex_unlock(&philo->data->meal_mutex);
 	sleep_until(&tmp);
 }
 
