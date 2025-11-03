@@ -35,7 +35,7 @@
 # define FORMAT_INIT_ERROR "Error: Failed to initialize data\n"
 
 # define US_MONITOR_INTERVAL 100
-# define US_ATE_DELAY 300
+# define US_DELAY 100
 
 # define CMP_EQUAL 1
 # define CMP_LESS_THAN 2

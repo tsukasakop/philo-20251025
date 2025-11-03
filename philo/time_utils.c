@@ -70,7 +70,7 @@ void	sleep_until(struct timeval *wait_for)
 	gettimeofday(&now, NULL);
 	while (cmp_timeval(&now, wait_for) & CMP_LESS_THAN)
 	{
-		usleep(0);
+		usleep(US_DELAY);
 		gettimeofday(&now, NULL);
 	}
 }

@@ -82,7 +82,7 @@ void	*solo_routine(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo->data->data_mutex);
-		usleep(100);
+		usleep(US_DELAY);
 	}
 	pthread_mutex_unlock(philo->left_fork);
 	return (NULL);
@@ -107,7 +107,7 @@ void	*philosopher_routine(void *arg)
 		{
 			eat(philo);
 			sleep_with_release_forks(philo);
-			usleep(US_ATE_DELAY);
+			usleep(US_DELAY);
 		}
 	}
 	return (NULL);
