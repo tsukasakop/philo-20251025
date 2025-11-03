@@ -81,7 +81,6 @@ static int	init_philosophers(t_data *data)
 		data->philosophers[i].id = i + 1;
 		data->philosophers[i].eat_count = 0;
 		data->philosophers[i].last_ate_at = data->started_at;
-		data->philosophers[i].is_eating = 0;
 		data->philosophers[i].left_fork = &data->forks[i];
 		data->philosophers[i].right_fork = &data->forks[(i + 1)
 			% data->num_philosophers];

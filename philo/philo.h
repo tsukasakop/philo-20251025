@@ -24,9 +24,6 @@
 
 # define SUCCESS 0
 # define ERROR 1
-# define MALLOC_ERROR -1
-# define MUTEX_ERROR -2
-# define THREAD_ERROR -3
 
 # define MSG_FORK "has taken a fork"
 # define MSG_EAT "is eating"
@@ -51,7 +48,6 @@ typedef struct s_philosopher
 	int							id;
 	int							eat_count;
 	struct timeval				last_ate_at;
-	int							is_eating;
 	pthread_mutex_t				*left_fork;
 	pthread_mutex_t				*right_fork;
 	pthread_t					thread;
@@ -67,7 +63,6 @@ typedef struct s_data
 	int							must_eat_count;
 	struct timeval				started_at;
 	int							simulation_end;
-	pthread_mutex_t				print_mutex;
 	pthread_mutex_t				data_mutex;
 	pthread_mutex_t				meal_mutex;
 	pthread_mutex_t				*forks;
@@ -93,8 +88,6 @@ void					*philosopher_routine(void *arg);
 void					*monitor_routine(void *arg);
 size_t					ft_strlen(const char *s);
 int						ft_atoi(const char *str);
-void					*ft_memcpy(void *dest, const void *src, size_t n);
-void					*ft_memset(void *b, int c, size_t len);
 struct timeval			*timeval_from_ms(struct timeval *dest, long ms);
 struct timeval			*add_timeval(struct timeval *dest, struct timeval *add);
 struct timeval			*sub_timeval(struct timeval *dest, struct timeval *sub);
