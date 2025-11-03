@@ -42,10 +42,10 @@ static int	init_fork_mutexes(t_data *data)
 	i = 0;
 	while (i < data->num_philosophers)
 	{
-		if (pthread_mutex_init(&data->forks[i].mutex, NULL) != 0)
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 		{
 			while (i > 0)
-				pthread_mutex_destroy(&data->forks[--i].mutex);
+				pthread_mutex_destroy(&data->forks[--i]);
 			return (ERROR);
 		}
 		i++;
@@ -96,24 +96,19 @@ static int	init_philosophers(t_data *data)
 
 int	init_data(t_data *data, int argc, char **argv)
 {
-	int	i;
-
 	memset(data, 0, sizeof(t_data));
 	if (init_args(data, argc, argv) != SUCCESS)
 		return (ERROR);
+	gettimeofday(&data->started_at, NULL);
 	data->simulation_end = 0;
 	data->philosophers = malloc(sizeof(t_philosopher) * data->num_philosophers);
-	data->forks = malloc(sizeof(t_fork) * data->num_philosophers);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philosophers);
 	if (!data->philosophers || !data->forks || init_mutexes(data) != SUCCESS)
 	{
 		free(data->philosophers);
 		free(data->forks);
 		return (ERROR);
 	}
-	gettimeofday(&data->started_at, NULL);
-	i = 0;
-	while (i < data->num_philosophers)
-		data->forks[i++].released_at = data->started_at;
 	if (init_philosophers(data) != SUCCESS)
 	{
 		cleanup_resources(data);
