@@ -93,6 +93,8 @@ void	*philosopher_routine(void *arg)
 	t_philosopher	*philo;
 
 	philo = (t_philosopher *)arg;
+	if (philo->id % 2 == 0)
+		usleep(US_EAT_DELAY);
 	while (1)
 	{
 		pthread_mutex_lock(&philo->data->data_mutex);
@@ -109,6 +111,7 @@ void	*philosopher_routine(void *arg)
 			sleep_with_release_forks(philo);
 			usleep(US_DELAY);
 		}
+		usleep(US_EAT_DELAY);
 	}
 	return (NULL);
 }

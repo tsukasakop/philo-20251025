@@ -36,6 +36,7 @@
 
 # define US_MONITOR_INTERVAL 100
 # define US_DELAY 100
+# define US_EAT_DELAY 500
 
 # define CMP_EQUAL 1
 # define CMP_LESS_THAN 2
