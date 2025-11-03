@@ -67,9 +67,9 @@ void	log_action(t_philosopher *philo, t_action action)
 		gettimeofday(&sub, NULL);
 		sub_timeval(&sub, &(philo->data->started_at));
 		if (sub.tv_sec == 0)
-			printf("%d ", sub.tv_usec / 1000);
+			printf("%ld ", sub.tv_usec / 1000);
 		else
-			printf("%ld%03d ", sub.tv_sec, sub.tv_usec / 1000);
+			printf("%ld%03ld ", sub.tv_sec, sub.tv_usec / 1000);
 		printf("%d %s\n", philo->id, msg[action]);
 	}
 	pthread_mutex_unlock(&philo->data->data_mutex);
